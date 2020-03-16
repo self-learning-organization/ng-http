@@ -31,7 +31,8 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   onCreatePost(postData: Post) {
-    this.postsService.createAndStorePost(postData.title, postData.content)
+    this.postsService.createAndStorePost(postData.title, postData.content);
+    this.fetchPosts();
   }
 
   /* Alternative, coulda used mergeMap inside the service 

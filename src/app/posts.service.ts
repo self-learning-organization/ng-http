@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { map, catchError } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams, HttpEventType } from '@angular/common/http';
+import { map, catchError, tap } from 'rxjs/operators';
 import { Subject, throwError } from 'rxjs';
 
 import { Post } from './post.model';
@@ -16,7 +16,10 @@ export class PostsService {
         return this.http
         .post<{name: string}>(
             'https://angular-individual-learning.firebaseio.com/posts.json',
-            postData
+            postData,
+            {
+                observe: 'response'
+            }
         )
         .subscribe(
             responseData => {
@@ -60,6 +63,18 @@ export class PostsService {
     }
 
     deletePosts() {
-        return this.http.delete<{[key: string]: Post}>('https://angular-individual-learning.firebaseio.com/posts.json');
+        return this.http.delete<{[key: string]: Post}>(
+            'https://angular-individual-learning.firebaseio.com/posts.json',
+            {
+                observe: 'events' // body is the default. We also have response and events
+            }).pipe(tap(event => {
+                console.log(event);
+                if (event.type === HttpEventType.Sent) {
+                    // ...
+                }
+                if (event.type === HttpEventType.Response) {
+                    console.log(event.body);
+                }
+            }));
     }
 }
