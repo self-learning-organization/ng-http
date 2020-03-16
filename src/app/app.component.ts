@@ -21,8 +21,25 @@ export class AppComponent implements OnInit {
   }
 
   onCreatePost(postData: Post) {
-    this.postsService.createAndStorePost(postData.title, postData.content);
+    this.postsService.createAndStorePost(postData.title, postData.content)
+    .subscribe(() => {
+      this.onFetchPosts(); // This is just one way to automate the refresh after adding a new post
+    });
   }
+
+  /* Alternative, coulda used mergeMap inside the service 
+  createAndStorePost(title: string, content: string) {
+    return this.http.post<{name: string}>('https://xxxxx.firebaseio.com/posts.json', {title, content}).pipe(mergeMap(() => this.fetchPosts()));
+  }
+ 
+  And replace the corresponding method with the following:
+  onCreatePost(postData: Post) {
+    this.postsService.createAndStorePost(postData.title, postData.content).subscribe(
+      posts => this.loadedPosts = posts,
+      error => this.error = error.statusText
+    );
+  }
+  */
 
   onFetchPosts() {
     this.fetchPosts();
@@ -37,6 +54,9 @@ export class AppComponent implements OnInit {
   }
 
   onClearPosts() {
-    // Send Http request
+    this.postsService.deletePosts()
+    .subscribe(() => {
+      this.loadedPosts = [];
+    });
   }
 }

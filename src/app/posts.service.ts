@@ -10,14 +10,11 @@ export class PostsService {
 
     createAndStorePost(title: string, content: string) {
         const postData: Post = {title: title, content: content};
-        this.http
+        return this.http
         .post<{name: string}>(
             'https://angular-individual-learning.firebaseio.com/posts.json',
             postData
         )
-        .subscribe(responseData => {
-            console.log(responseData);
-        });
     }
 
     fetchPosts() {
@@ -33,5 +30,9 @@ export class PostsService {
             return postsArray;
           })
         )
+    }
+
+    deletePosts() {
+        return this.http.delete<{[key: string]: Post}>('https://angular-individual-learning.firebaseio.com/posts.json');
     }
 }
