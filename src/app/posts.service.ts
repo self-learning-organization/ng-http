@@ -43,6 +43,7 @@ export class PostsService {
                 }),
                 // params: new HttpParams().set('print', 'pretty')
                 params: searchParams
+                // responseType: 'text' // To make the screen break, uncomment this and remove "<{[key: string]: Post}>"
             }
             )
         .pipe(
@@ -66,7 +67,8 @@ export class PostsService {
         return this.http.delete<{[key: string]: Post}>(
             'https://angular-individual-learning.firebaseio.com/posts.json',
             {
-                observe: 'events' // body is the default. We also have response and events
+                observe: 'events',      // body is the default. We also have response and events
+                responseType: 'text'    // json is the default. We also have text and blob
             }).pipe(tap(event => {
                 console.log(event);
                 if (event.type === HttpEventType.Sent) {
