@@ -21,7 +21,7 @@ export class PostsService {
     }
 
     fetchPosts() {
-        this.http.get<{[key: string]: Post}>('https://angular-individual-learning.firebaseio.com/posts.json')
+        return this.http.get<{[key: string]: Post}>('https://angular-individual-learning.firebaseio.com/posts.json')
         .pipe(
           map((responseData) => {
             const postsArray: Post[] = [];
@@ -33,7 +33,5 @@ export class PostsService {
             return postsArray;
           })
         )
-        .subscribe((posts) => {
-        });
     }
 }
