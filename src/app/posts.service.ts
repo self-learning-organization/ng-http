@@ -42,7 +42,8 @@ export class PostsService {
                     'Custom-Header': 'Hello'
                 }),
                 // params: new HttpParams().set('print', 'pretty')
-                params: searchParams
+                params: searchParams,
+                responseType: 'json' 
                 // responseType: 'text' // To make the screen break, uncomment this and remove "<{[key: string]: Post}>"
             }
             )
@@ -64,7 +65,7 @@ export class PostsService {
     }
 
     deletePosts() {
-        return this.http.delete<{[key: string]: Post}>(
+        return this.http.delete(
             'https://angular-individual-learning.firebaseio.com/posts.json',
             {
                 observe: 'events',      // body is the default. We also have response and events
